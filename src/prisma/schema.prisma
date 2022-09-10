@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  email          String          @unique
+  verification   Verification?
+}
+
+model Verification {
+  id               String     @id @default(uuid())
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  verifState       VerifState @default(STARTED)
+  name             String?
+  surname          String?
+  birthdate        DateTime?
+  street           String?
+  city             String?
+  zip              String?
+  bankCode         String?
+  bankNumber       String?
+  signatureId      String?
+  userId           String     @unique
+  user             User       @relation(fields: [userId], references: [id])
+}
+
+enum VerifState {
+  STARTED
+  FILLED_PERSONAL_INFO
+  FILLED_BANK_INFO
+  SIGNED
+}
