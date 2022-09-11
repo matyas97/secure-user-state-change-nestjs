@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dev
+    ports:
+      - 5432:5432
